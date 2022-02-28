@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Lottery Sim</title>
+        <link type="text/css" href="style.css" rel="stylesheet"/>
+    </head>
+
+    <body>
+        <h1>Lucky for Life Simulator</h1>
+        <script language="javascript">
+            //initialize winning array and lucky ball number
+            winningNumbers = [12, 15, 24, 35, 48];
+            winningLucky = 3;
+            numbers = new Array(5);
+
+            //function to reload page
+            function refreshPage() {
+                location.reload();
+            }
+
+            //function to generate 5 unique random numbers
+            function uniqueRandoms() {
+                let arr = []
+
+                //numbers between 1 to 48
+                for (let i = 1; i <= 48; i++) {
+                    arr.push(i)
+                }
+
+                let uniqueNumbers = [];
+
+                //push 5 unique numbers into array
+                for (let i = 1; i <= 5; i++) {
+                    const random = Math.floor(Math.random() * (48 - i));
+                    uniqueNumbers.push(arr[random]);
+                    arr[random] = arr[48 - i];
+                }
+
+                //return resulting array
+                return uniqueNumbers;
+            }
+
+            //assign unique random numbers to user's lottery pick
+            numbers = uniqueRandoms();
+
+            //choose lucky ball for user
+            luckyBall = parseInt((Math.random() * 18) + 1);
+
+            //display numbers before sorting
+            document.write("Numbers before sorting: <br/>");
+
+            //loop through and display numbers
+            for (i = 0; i < 5; i++) {
+                document.write(numbers[i] + " ");
+            }
+
+            //add spacing
+            document.write("<br/><br/>");
+
+            //sort numbers array from least to greatest
+            for (i = 0; i < 4; i++) {
+                for (j = i + 1; j < 5; j++) {
+                    if (numbers[i] > numbers[j]) {
+                        //swap elements
+                        temp = numbers[i];
+                        numbers[i] = numbers[j];
+                        numbers[j] = temp;
+                    }
+                }
+            }
+
+            //show sorted numbers
+            document.write("Numbers after sorting: <br/>");
+
+            //loop through and display numbers
+            for (i = 0; i < 5; i++) {
+                document.write(numbers[i] + " ");
+            }
+
+            //display user's lucky ball
+            document.write("<br/><br/>Lucky ball: <br/><strong>" + luckyBall + "</strong>");
+
+            //display winning numbers and lucky ball
+            document.write("<br/><br/>Winning Numbers and Lucky Ball: <br/>");
+            
+            for (i = 0; i < 5; i++) {
+                document.write(winningNumbers[i] + " ");
+            }
+
+            document.write("<strong>" + winningLucky + "</strong>" + "<br/><br/>");
+
+            numMatches = 0;
+            prize = 0;
+            luckyMatch = false;
+
+            //determine number of matches between user and winning numbers
+            for (i = 0; i < 5; i++) {
+                if (numbers[i] == winningNumbers[i]) {
+                    numMatches++;
+                }
+            }
+
+            //check results
+            if (luckyBall == winningLucky) {
+                luckyMatch = true;
+                
+                //determine payout based on number of matches and lucky ball
+                if (numMatches == 5) {
+                    prize = 7000;
+                } else if (numMatches == 4) {
+                    prize = 5000;
+                } else if (numMatches == 3) {
+                    prize = 150;
+                } else if (numMatches == 2) {
+                    prize = 25;
+                } else if (numMatches == 1) {
+                    prize = 6;
+                } else {
+                    prize = 4;
+                }
+            } else {
+                //determine payout based on number of matches
+                if (numMatches == 5) {
+                    prize = 25000;
+                } else if (numMatches == 4) {
+                    prize = 200;
+                } else if (numMatches == 3) {
+                    prize = 20;
+                } else if (numMatches == 2) {
+                    prize = 3;
+                } else {
+                    prize = 0;
+                }
+            }
+
+            document.write(numMatches + " of your picks matched the winning numbers. <br/>");
+            
+            //display info about lucky ball match
+            if (luckyMatch) {
+                document.write("Your lucky ball matched! <br/>");
+            } else {
+                document.write("Your lucky ball didn't match. Better luck next time! <br/><br/>")
+            }
+
+            //display final payout/prize info
+            if (prize == 7000) {
+                document.write("Congrats! You won $" + prize + "a week for LIFE!");
+            } else if (prize == 25000) {
+                document.write("Congrats! You won $" + prize + " a year for LIFE!");
+            } else {
+                document.write("The payout for your picks is $" + prize + ".<br/><br/>");
+            }
+        </script>
+        <input type="button" value="Try a New Ticket" onclick="refreshPage()" />
+    </body>
+</html>
